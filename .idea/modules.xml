@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FamilyMapServerStudent.iml" filepath="$PROJECT_DIR$/FamilyMapServerStudent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/dao.iml" filepath="$PROJECT_DIR$/src/dao.iml" />
     </modules>
   </component>
 </project>
