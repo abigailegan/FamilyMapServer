@@ -118,6 +118,25 @@ public class EventModel {
         return year;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+
+        if (o instanceof EventModel) {
+            EventModel oEventModel = (EventModel) o;
+            return oEventModel.getEventID().equals(getEventID()) &&
+                    oEventModel.getUsername().equals(getUsername()) &&
+                    oEventModel.getPersonID().equals(getPersonID()) &&
+                    oEventModel.getLatitude() == getLatitude() &&
+                    oEventModel.getLongitude() == getLongitude() &&
+                    oEventModel.getCountry().equals(getCountry()) &&
+                    oEventModel.getCity().equals(getCity()) &&
+                    oEventModel.getEventType().equals(getEventType()) &&
+                    oEventModel.getYear() == getYear();
+        }
+        else return false;
+    }
+
     /**
      * Creates a model with event information
      * @param eventID unique identifier for this event (non-empty string)/.
@@ -141,4 +160,9 @@ public class EventModel {
         this.eventType = eventType;
         this.year = year;
     }
+
+    /**
+     * Constructor for EventModel object with no parameters
+     */
+    public EventModel() {}
 }

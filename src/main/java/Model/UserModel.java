@@ -92,6 +92,24 @@ public class UserModel {
         return personID;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (o instanceof UserModel) {
+            UserModel oUserModel = (UserModel) o;
+            return oUserModel.getUsername().equals(getUsername()) &&
+                    oUserModel.getPassword().equals(getPassword()) &&
+                    oUserModel.getEmail().equals(getEmail()) &&
+                    oUserModel.getFirstName().equals(getFirstName()) &&
+                    oUserModel.getLastName().equals(getLastName()) &&
+                    oUserModel.getGender().equals(getGender()) &&
+                    oUserModel.getPersonID().equals(getPersonID());
+        }
+        else return false;
+    }
+
     /**
      * Creates a model with user information.
      * @param username unique username.
@@ -111,4 +129,9 @@ public class UserModel {
         this.gender = gender;
         this.personID = personID;
     }
+
+    /**
+     * Constructor for UserModel object with no parameters
+     */
+    public UserModel() {}
 }

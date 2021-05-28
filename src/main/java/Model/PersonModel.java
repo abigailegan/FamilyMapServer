@@ -105,6 +105,25 @@ public class PersonModel {
         return spouseID;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (o instanceof PersonModel) {
+            PersonModel oPersonModel = (PersonModel) o;
+            return oPersonModel.getPersonID().equals(getPersonID()) &&
+                    oPersonModel.getUsername().equals(getUsername()) &&
+                    oPersonModel.getFirstName().equals(getFirstName()) &&
+                    oPersonModel.getLastName().equals(getLastName()) &&
+                    oPersonModel.getGender().equals(getGender()) &&
+                    oPersonModel.getFatherID().equals(getFatherID()) &&
+                    oPersonModel.getMotherID().equals(getMotherID()) &&
+                    oPersonModel.getSpouseID().equals(getSpouseID());
+        }
+        else return false;
+    }
+
     /**
      * Creates a model with person information
      * @param personID unique identifier for this person(non-empty string).
@@ -127,4 +146,9 @@ public class PersonModel {
         this.motherID = motherID;
         this.spouseID = spouseID;
     }
+
+    /**
+     * Constructor for PersonModel object with no parameters
+     */
+    public PersonModel() {}
 }
