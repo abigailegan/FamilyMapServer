@@ -91,6 +91,24 @@ public class PersonDAO {
         return person;
     }
 
+    public void deleteByUsername(String username) throws SQLException {
+        try {
+            PreparedStatement statement = null;
+            ResultSet rs = null;
+            try {
+                String sql = "delete from Persons WHERE username = '" + username + "'";
+                statement = connection.prepareStatement(sql);
+
+                statement.executeQuery();
+            } finally {
+                if (statement != null) statement.close();
+            }
+        }
+        catch (SQLException error) {
+            throw new SQLException("deleteByUsername failed");
+        }
+    }
+
     /**
      * Clears Persons table
      * @throws SQLException in case of error

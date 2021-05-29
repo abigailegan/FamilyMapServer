@@ -71,11 +71,33 @@ public class EventResult {
     private int year;
 
     /**
+     * EventModel object returned
+     */
+    private EventModel event;
+
+    public EventModel getEvent() { return event; }
+
+    public String getPersonID() {
+        return personID;
+    }
+
+    public String getEventID() { return eventID; }
+
+    public String getUsername() { return associatedUsername; }
+    public float getLatitude() { return latitude; }
+    public float getLongitude() { return longitude; }
+    public String getCountry() { return country; }
+    public String getCity() { return city; }
+    public String getEventType() { return eventType; }
+    public int getYear() { return year; }
+
+    /**
      * Constructor for successful /event/[eventID] response body
      * @param event EventModel object
      * @param success boolean identifier
      */
     public EventResult(EventModel event, boolean success) {
+        this.event = event;
         this.associatedUsername = event.getUsername();
         this.eventID = event.getEventID();
         this.personID = event.getPersonID();
@@ -106,5 +128,24 @@ public class EventResult {
     public EventResult(String message, boolean success) {
         this.message = message;
         this.success = success;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+
+        if (o instanceof EventResult) {
+            EventResult oEventResult = (EventResult) o;
+            return oEventResult.getEventID().equals(getEventID()) &&
+                    oEventResult.getUsername().equals(getUsername()) &&
+                    oEventResult.getPersonID().equals(getPersonID()) &&
+                    oEventResult.getLatitude() == getLatitude() &&
+                    oEventResult.getLongitude() == getLongitude() &&
+                    oEventResult.getCountry().equals(getCountry()) &&
+                    oEventResult.getCity().equals(getCity()) &&
+                    oEventResult.getEventType().equals(getEventType()) &&
+                    oEventResult.getYear() == getYear();
+        }
+        else return false;
     }
 }

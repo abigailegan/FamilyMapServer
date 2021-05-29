@@ -31,6 +31,42 @@ public class RegisterResult {
      */
     private String message;
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setAuthtoken(String authtoken) {
+        this.authtoken = authtoken;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getAuthtoken() {
+        return authtoken;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPersonID() {
+        return personID;
+    }
+
+    public void setPersonID(String personID) {
+        this.personID = personID;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
     /**
      * Constructor for a successful result
      * @param authtoken String generated authtokean

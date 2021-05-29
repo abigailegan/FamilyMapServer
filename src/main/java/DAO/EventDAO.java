@@ -112,6 +112,24 @@ public class EventDAO {
         }
     }
 
+    public void deleteByUsername(String username) throws SQLException {
+        try {
+            PreparedStatement statement = null;
+            ResultSet rs = null;
+            try {
+                String sql = "delete from Events WHERE username = '" + username + "'";
+                statement = connection.prepareStatement(sql);
+
+                statement.executeQuery();
+            } finally {
+                if (statement != null) statement.close();
+            }
+        }
+        catch (SQLException error) {
+            throw new SQLException("deleteByUsername failed");
+        }
+    }
+
     /**
      * Removes specified event from table
      * @param eventID eventID of event to delete

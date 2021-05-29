@@ -31,6 +31,42 @@ public class LoginResult {
      */
     private String message;
 
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setPersonID(String personID) {
+        this.personID = personID;
+    }
+
+    public String getPersonID() {
+        return personID;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getAuthtoken() {
+        return authtoken;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setAuthtoken(String authtoken) {
+        this.authtoken = authtoken;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     /**
      * Constructor for a successful request
      * @param authtoken String containing generated authtoken

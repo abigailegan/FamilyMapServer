@@ -15,5 +15,7 @@ public class EventFamilyService {
      * @param request EventRequest object
      * @return EventResult endpoint
      */
-    public EventResult event(EventRequest request) { return null; }
+    public EventResult event(EventRequest request) {
+        return null;
+    }
 }

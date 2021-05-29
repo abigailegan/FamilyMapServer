@@ -82,6 +82,41 @@ public class UserDAO {
         return user;
     }
 
+    public UserModel findByUsername(String username) throws SQLException {
+        UserModel user = new UserModel();
+
+        try {
+            PreparedStatement statement = null;
+            ResultSet rs = null;
+
+            try {
+                String sql = "select * from Users WHERE username = '" + username + "'";
+                statement = connection.prepareStatement(sql);
+
+                rs = statement.executeQuery();
+
+                if (rs.getString(1) == null) throw new SQLException();
+
+                while (rs.next()) {
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    user.setEmail(rs.getString("email"));
+                    user.setFirstName(rs.getString("firstName"));
+                    user.setLastName(rs.getString("lastName"));
+                    user.setGender(rs.getString("gender"));
+                    user.setPersonID(rs.getString("personID"));
+                }
+            } finally {
+                if (rs != null) rs.close();
+                if (statement != null) statement.close();
+            }
+        }
+        catch (SQLException error) {
+            throw new SQLException("find User failed");
+        }
+        return user;
+    }
+
     /**
      * Clears Users table
      */

@@ -15,22 +15,21 @@ public class EventRequest {
      */
     private String eventID;
 
+    public String getEventID() { return eventID; }
+
     /**
      * Constructor for request body for /event/[eventID] endpoint (EventIDService)
      * @param eventID String containing ID of desired event
      * @return EventRequest object
      */
-    public EventRequest EventRequest(String eventID) {
+    public EventRequest(String eventID) {
         this.eventID = eventID;
-
-        return this;
     }
 
     /**
      * Constructor for request body for /event endpoint (EventFamilyService)
      * @return EventRequest object
      */
-    public EventRequest EventRequest() {
-        return this;
+    public EventRequest() {
     }
 }
