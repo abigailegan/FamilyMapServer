@@ -3,6 +3,7 @@ package DAO;
 import Model.PersonModel;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * DAO class for generated Person objects
@@ -91,15 +92,60 @@ public class PersonDAO {
         return person;
     }
 
-    public void deleteByUsername(String username) throws SQLException {
+    /**
+     * Returns all Persons with associated username
+     * @param username Associated username
+     * @return ArrayList of PersonModels
+     * @throws SQLException if query fails
+     */
+    public ArrayList<PersonModel> findByUsername(String username) throws SQLException {
+        ArrayList<PersonModel> people = new ArrayList<PersonModel>();
+        PersonModel person = new PersonModel();
         try {
             PreparedStatement statement = null;
             ResultSet rs = null;
             try {
+                String sql = "select * from Persons WHERE username = '" + username + "'";
+                statement = connection.prepareStatement(sql);
+
+                rs = statement.executeQuery();
+
+                if (rs.getString(1) == null) throw new SQLException();
+
+                while (rs.next()) {
+                    person.setPersonID(rs.getString(1));
+                    person.setUsername(rs.getString(2));
+                    person.setFirstName(rs.getString(3));
+                    person.setLastName(rs.getString(4));
+                    person.setGender(rs.getString(5));
+                    person.setFatherID(rs.getString(6));
+                    person.setMotherID(rs.getString(7));
+                    person.setSpouseID(rs.getString(8));
+                    people.add(person);
+                }
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+            }
+        }
+        catch (SQLException error) {
+            throw new SQLException("findByUsername failed");
+        }
+        return people;
+    }
+
+    public void deleteByUsername(String username) throws SQLException {
+        try {
+            PreparedStatement statement = null;
+            try {
                 String sql = "delete from Persons WHERE username = '" + username + "'";
                 statement = connection.prepareStatement(sql);
 
-                statement.executeQuery();
+                statement.executeUpdate();
             } finally {
                 if (statement != null) statement.close();
             }

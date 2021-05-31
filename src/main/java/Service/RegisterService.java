@@ -18,14 +18,14 @@ public class RegisterService {
      * @param request RegisterRequest object
      * @return RegisterResult object
      */
-    public RegisterResult register(RegisterRequest request) {
+    public RegisterResult register(RegisterRequest request) throws SQLException {
+        DatabaseDAO databaseDAO = new DatabaseDAO();
         try {
-            DatabaseDAO databaseDAO = new DatabaseDAO();
             UserDAO userDAO = new UserDAO(databaseDAO.getConnection());
 
             //Create new user account
             UserModel userModel = new UserModel(request.getUsername(), request.getPassword(), request.getEmail(),
-                    request.getFirstName(), request.getLastName(), request.getGender(), UUID.randomUUID().toString());
+                        request.getFirstName(), request.getLastName(), request.getGender(), UUID.randomUUID().toString());
             userDAO.add(userModel);
             databaseDAO.closeConnection(true);
 
@@ -44,6 +44,7 @@ public class RegisterService {
 
         }
         catch (SQLException error) {
+            databaseDAO.closeConnection(false);
             String message = "Error" + error.getMessage();
             return new RegisterResult(message, false);
         }

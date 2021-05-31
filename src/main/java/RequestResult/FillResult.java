@@ -16,6 +16,18 @@ public class FillResult {
      */
     private boolean success;
 
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     /**
      * Constructor for /fill/[username]/{generations} response body
      * @param message String containing message

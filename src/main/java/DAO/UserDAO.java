@@ -38,7 +38,7 @@ public class UserDAO {
             statement.executeUpdate();
         }
         catch (SQLException error) {
-            throw new SQLException("Error encountered while inserting into Users table");
+            throw new SQLException(error.getMessage());
         }
     }
 
@@ -82,6 +82,12 @@ public class UserDAO {
         return user;
     }
 
+    /**
+     * Finds a user with the matching username
+     * @param username String username
+     * @return UserModel
+     * @throws SQLException if query fails
+     */
     public UserModel findByUsername(String username) throws SQLException {
         UserModel user = new UserModel();
 

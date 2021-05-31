@@ -20,9 +20,9 @@ public class LoginService {
      * @param request LoginRequest object
      * @return LoginResult object
      */
-    public LoginResult login(LoginRequest request) {
+    public LoginResult login(LoginRequest request) throws SQLException {
+        DatabaseDAO databaseDAO = new DatabaseDAO();
         try {
-            DatabaseDAO databaseDAO = new DatabaseDAO();
             //Verify username and password
             UserDAO userDAO = new UserDAO(databaseDAO.getConnection());
 
@@ -52,6 +52,7 @@ public class LoginService {
             return new LoginResult(authtoken, matchedUser.getUsername(), matchedUser.getPersonID(), true);
         }
         catch (Exception error) {
+            databaseDAO.closeConnection(false);
             String message = "Error: " + error.getMessage();
             return new LoginResult(message, false);
         }

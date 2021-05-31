@@ -40,7 +40,7 @@ public class FillService {
             locationsReader = new FileReader("json/locations.json");
             fnamesReader = new FileReader("json/fnames.json");
             mnamesReader = new FileReader("json/mnames.json");
-            surnamesReader = new FileReader("json/surnames.json");
+            surnamesReader = new FileReader("json/snames.json");
         }
         catch (FileNotFoundException error) {
             throw new FileNotFoundException(error.getMessage());
@@ -70,15 +70,18 @@ public class FillService {
         String motherLastName = surnames.get(0);
         PersonModel mother = new PersonModel(person.getMotherID(), person.getUsername(), motherFirstName, motherLastName,
                 "f", null, null, person.getFatherID());
+        personDAO.add(mother);
 
         //Make father
         String fatherFirstName = mnames.get(0);
         String fatherLastName = surnames.get(0);
         PersonModel father = new PersonModel(person.getFatherID(), person.getUsername(), fatherFirstName, fatherLastName,
                 "m", null, null, person.getMotherID());
+        personDAO.add(father);
 
         Random random = new Random();
         EventDAO eventDAO = new EventDAO(databaseDAO.getConnection());
+
         //Generate mother birth event data
         String motherBirthEventID = UUID.randomUUID().toString();
         float motherBirthLatitude = locations.get(0).getLatitude();
@@ -136,7 +139,7 @@ public class FillService {
         eventDAO.add(fatherDeathEvent);
 
         //Generate father marriage event
-        EventModel fatherMarriageEvent = new EventModel(motherMarriageEventID, person.getUsername(), father.getPersonID(),
+        EventModel fatherMarriageEvent = new EventModel(UUID.randomUUID().toString(), person.getUsername(), father.getPersonID(),
                 motherMarriageLatitude, motherMarriageLongitude, motherMarriageCountry, motherBirthCity, "marriage", motherMarriageYear);
         eventDAO.add(fatherMarriageEvent);
 
@@ -155,11 +158,12 @@ public class FillService {
      * @return FillResult object
      */
     public FillResult fill(FillRequest request) throws SQLException {
+        DatabaseDAO databaseDAO = new DatabaseDAO();
+
         try {
             String username = request.getUsername();
             int generations = request.getGenerations();
 
-            DatabaseDAO databaseDAO = new DatabaseDAO();
             UserDAO userDAO = new UserDAO(databaseDAO.getConnection());
             PersonDAO personDAO = new PersonDAO(databaseDAO.getConnection());
             EventDAO eventDAO = new EventDAO(databaseDAO.getConnection());
@@ -169,6 +173,7 @@ public class FillService {
                 user = userDAO.findByUsername(username);
             }
             catch (SQLException error) {
+                databaseDAO.closeConnection(true);
                 throw new SQLException("Error: Username does not belong to a registered user.");
             }
 
@@ -186,6 +191,7 @@ public class FillService {
                 fillLists();
             }
             catch (FileNotFoundException error) {
+                databaseDAO.closeConnection(true);
                 throw new FileNotFoundException(error.getMessage());
             }
             String birthEventID = UUID.randomUUID().toString();
@@ -208,8 +214,10 @@ public class FillService {
 
             String message = "Successfully added " + numPersons + " people and " + numEvents + " events.";
             FillResult result = new FillResult(message, true);
+            return result;
         }
         catch (SQLException | FileNotFoundException error) {
+            databaseDAO.closeConnection(false);
             String message = error.getMessage();
             FillResult result = new FillResult(message, false);
         }

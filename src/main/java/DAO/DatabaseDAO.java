@@ -32,6 +32,7 @@ public class DatabaseDAO {
      * @param commit: whether or not to commit changes to the database
      */
     public void closeConnection(boolean commit) throws SQLException {
+        if (connection == null) return;
         try {
             if (commit) {
                 connection.commit();
@@ -67,7 +68,7 @@ public class DatabaseDAO {
 
         }
         catch (SQLException error) {
-            throw new SQLException("An error occurred when clearing the database.");
+            throw new SQLException("An error occurred when clearing the database.\n" + error.getMessage());
         }
     }
 

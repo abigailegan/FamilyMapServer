@@ -3,11 +3,13 @@
 package DAO;
 
 import Model.EventModel;
+import Model.PersonModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * DAO class
@@ -48,7 +50,7 @@ public class EventDAO {
             statement.executeUpdate();
         }
         catch (SQLException error) {
-            throw new SQLException("Error encountered while inserting into Events table");
+            throw new SQLException("Error encountered while inserting into Events table\n" + error.getMessage());
         }
     }
 
@@ -96,6 +98,53 @@ public class EventDAO {
     }
 
     /**
+     * Returns all Events with the same associated username
+     * @param username Strin associated username
+     * @return ArrayList of EventModels
+     * @throws SQLException if query fails
+     */
+    public ArrayList<EventModel> findByUsername(String username) throws SQLException {
+        ArrayList<EventModel> events = new ArrayList<EventModel>();
+        EventModel event = new EventModel();
+        try {
+            PreparedStatement statement = null;
+            ResultSet rs = null;
+            try {
+                String sql = "select * from Events WHERE username = '" + username + "'";
+                statement = connection.prepareStatement(sql);
+
+                rs = statement.executeQuery();
+
+                if (rs.getString(1) == null) throw new SQLException();
+
+                while (rs.next()) {
+                    event.setEventID(rs.getString(1));
+                    event.setUsername(rs.getString(2));
+                    event.setPersonID(rs.getString(3));
+                    event.setLatitude(rs.getFloat(4));
+                    event.setLongitude(rs.getFloat(5));
+                    event.setCountry(rs.getString(6));
+                    event.setCity(rs.getString(7));
+                    event.setEventType(rs.getString(8));
+                    event.setYear(rs.getInt(9));
+                    events.add(event);
+                }
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+            }
+        }
+        catch (SQLException error) {
+            throw new SQLException("findByUsername failed");
+        }
+        return events;
+    }
+
+    /**
      * Clears Events table
      */
     public void clear() throws SQLException {
@@ -120,7 +169,7 @@ public class EventDAO {
                 String sql = "delete from Events WHERE username = '" + username + "'";
                 statement = connection.prepareStatement(sql);
 
-                statement.executeQuery();
+                statement.executeUpdate();
             } finally {
                 if (statement != null) statement.close();
             }
