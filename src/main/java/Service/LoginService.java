@@ -25,11 +25,22 @@ public class LoginService {
             DatabaseDAO databaseDAO = new DatabaseDAO();
             //Verify username and password
             UserDAO userDAO = new UserDAO(databaseDAO.getConnection());
-            UserModel matchedUser = userDAO.findByUsername(request.getUsername());
+
+            UserModel matchedUser;
+            try {
+                matchedUser = userDAO.findByUsername(request.getUsername());
+            }
+            catch (SQLException error) {
+                databaseDAO.closeConnection(true);
+                throw new Exception("Incorrect username or password.");
+            }
 
             if (!matchedUser.getPassword().equals(request.getPassword())) {
-                throw new Exception("Incorrect password.");
+                databaseDAO.closeConnection(true);
+                throw new Exception("Incorrect username or password.");
             }
+
+            databaseDAO.closeConnection(true);
 
             //Generate authtoken and add to table
             AuthTokenDAO authTokenDAO = new AuthTokenDAO(databaseDAO.getConnection());

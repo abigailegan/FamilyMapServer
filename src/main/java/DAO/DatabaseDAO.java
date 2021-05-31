@@ -63,6 +63,8 @@ public class DatabaseDAO {
             eventDAO.clear();
             personDAO.clear();
             userDAO.clear();
+
+
         }
         catch (SQLException error) {
             throw new SQLException("An error occurred when clearing the database.");
