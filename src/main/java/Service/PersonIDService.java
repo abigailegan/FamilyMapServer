@@ -53,7 +53,8 @@ public class PersonIDService {
                 return new PersonResult(message, false);
             }
             databaseDAO.closeConnection(true);
-            return new PersonResult(person, true);
+            PersonResult result = new PersonResult(person, true);
+            return result;
         }
         catch (SQLException error) {
             databaseDAO.closeConnection(false);

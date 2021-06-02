@@ -140,10 +140,4 @@ public class UserDAO {
             }
         }
     }
-
-    /**
-     * Removes user with specified person ID from the database
-     * @param personID ID of specific User to delete
-     */
-    public void delete(String personID) {}
 }

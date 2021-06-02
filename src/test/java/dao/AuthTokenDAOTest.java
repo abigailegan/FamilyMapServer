@@ -69,4 +69,13 @@ public class AuthTokenDAOTest {
         authTokenDAO.clear();
         assertThrows(SQLException.class, ()-> authTokenDAO.findUsername(authtoken));
     }
+
+    @Test
+    public void clearTwice() throws SQLException {
+        authTokenDAO.add(authTokenModel);
+        String authtoken = authTokenModel.getAuthToken();
+        authTokenDAO.clear();
+        authTokenDAO.clear();
+        assertThrows(SQLException.class, ()-> authTokenDAO.findUsername(authtoken));
+    }
 }

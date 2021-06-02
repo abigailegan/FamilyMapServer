@@ -91,6 +91,10 @@ public class EventResult {
     public String getEventType() { return eventType; }
     public int getYear() { return year; }
 
+    public ArrayList<EventModel> getData() {
+        return this.data;
+    }
+
     public String getMessage() {
         return message;
     }

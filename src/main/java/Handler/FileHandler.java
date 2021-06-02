@@ -4,6 +4,7 @@ import java.io.*;
         import java.net.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Locale;
 
@@ -33,6 +34,19 @@ public class FileHandler implements HttpHandler {
                 }
                 else {
                     String urlPath = "web" + url;
+                    File file = new File(urlPath);
+                    if (!file.exists()) {
+                        urlPath = new String("web/HTML/404.html");
+                        Path filePath = FileSystems.getDefault().getPath(urlPath);
+
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
+
+                        Files.copy(filePath, exchange.getResponseBody());
+
+                        exchange.getResponseBody().close();
+                        return;
+                    }
+
                     Path filePath = FileSystems.getDefault().getPath(urlPath);
                     exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                     Files.copy(filePath, exchange.getResponseBody());

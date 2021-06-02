@@ -179,9 +179,4 @@ public class EventDAO {
         }
     }
 
-    /**
-     * Removes specified event from table
-     * @param eventID eventID of event to delete
-     */
-    public void delete(String eventID) {}
 }

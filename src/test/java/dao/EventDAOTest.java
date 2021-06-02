@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,5 +73,28 @@ public class EventDAOTest {
         eventDAO.add(event);
         eventDAO.clear();
         assertThrows(SQLException.class, ()-> eventDAO.find("eventID"));
+    }
+
+    @Test
+    public void clearTwice() throws SQLException {
+        eventDAO.add(event);
+        eventDAO.clear();
+        eventDAO.clear();
+        assertThrows(SQLException.class, ()-> eventDAO.find("eventID"));
+    }
+
+    @Test
+    public void findByUsernamePass() throws SQLException {
+        eventDAO.clear();
+        eventDAO.add(event);
+        ArrayList<EventModel> matchedEvents = eventDAO.findByUsername(event.getUsername());
+        assertNotNull(matchedEvents);
+        assertEquals(event, matchedEvents.get(0));
+    }
+
+    @Test
+    public void findByUsernameFail() throws SQLException {
+        eventDAO.clear();
+        assertThrows(SQLException.class, ()-> eventDAO.findByUsername(event.getUsername()));
     }
  }

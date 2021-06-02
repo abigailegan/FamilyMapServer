@@ -1,7 +1,9 @@
 package service;
 
+import DAO.AuthTokenDAO;
 import DAO.DatabaseDAO;
 import DAO.EventDAO;
+import Model.AuthTokenModel;
 import Model.EventModel;
 import RequestResult.EventRequest;
 import RequestResult.EventResult;
@@ -35,6 +37,10 @@ public class EventIDServiceTest {
         EventDAO eventDAO = new EventDAO(databaseDAO.getConnection());
         event = new EventModel(eventID, username, personID, latitude, longitude, country, city, eventType, year);
         eventDAO.add(event);
+
+        AuthTokenDAO authTokenDAO = new AuthTokenDAO(databaseDAO.getConnection());
+        AuthTokenModel authTokenModel = new AuthTokenModel("qatest", "qatest");
+        authTokenDAO.add(authTokenModel);
         databaseDAO.closeConnection(true);
     }
 
@@ -48,7 +54,7 @@ public class EventIDServiceTest {
 
     @Test
     public void findPass() throws SQLException {
-        EventRequest eventRequest = new EventRequest("eventID");
+        EventRequest eventRequest = new EventRequest("eventID", "qatest");
         EventIDService eventIDService = new EventIDService();
         EventResult eventResult = eventIDService.event(eventRequest);
 
@@ -65,6 +71,6 @@ public class EventIDServiceTest {
 
         EventRequest eventRequest = new EventRequest(event.getEventID());
         EventIDService eventIDService = new EventIDService();
-        assertThrows(SQLException.class, ()-> eventIDService.event(eventRequest));
+        assertNull(eventIDService.event(eventRequest).getEvent());
     }
 }

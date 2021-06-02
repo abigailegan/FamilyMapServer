@@ -15,6 +15,7 @@ public class DatabaseDAO {
      */
     public Connection openConnection() throws SQLException {
         try {
+            if (connection != null) return connection;
             final String CONNECTION_URL = "jdbc:sqlite:fms.db";
 
             connection = DriverManager.getConnection(CONNECTION_URL);
@@ -69,72 +70,6 @@ public class DatabaseDAO {
         }
         catch (SQLException error) {
             throw new SQLException("An error occurred when clearing the database.\n" + error.getMessage());
-        }
-    }
-
-    /**
-     * Creates AuthToken, Events, Users, and Persons tables in the database
-     * @throws SQLException in case of any error
-     */
-    public void createTable() throws SQLException {
-        try {
-            Statement statement = null;
-            try {
-                statement = connection.createStatement();
-                statement.executeUpdate("drop table if exists AuthToken");
-                statement.executeUpdate("drop table if exists Events");
-                statement.executeUpdate("drop table if exists Persons");
-                statement.executeUpdate("drop table if exists Users");
-
-                statement.executeUpdate("CREATE TABLE \"AuthToken\" (" +
-                        "\"personID\"   TEXT NOT NULL," +
-                        "\"username\"   TEXT NOT NULL," +
-                        "\"authtoken\"  TEXT NOT NULL UNIQUE" +
-                        ");");
-                statement.executeUpdate("CREATE TABLE \"Events\" (" +
-                        "\"eventID\"	TEXT NOT NULL," +
-                        "\"username\"	TEXT NOT NULL," +
-                        "\"personID\"	TEXT NOT NULL," +
-                        "\"latitude\"	REAL NOT NULL," +
-                        "\"longitude\"	REAL NOT NULL," +
-                        "\"country\"	TEXT NOT NULL," +
-                        "\"city\"	TEXT NOT NULL," +
-                        "\"eventType\"	TEXT NOT NULL," +
-                        "\"year\"	TEXT NOT NULL," +
-                        "PRIMARY KEY(\"eventID\")" +
-                        ");"
-                );
-                statement.executeUpdate("CREATE TABLE \"Persons\" (" +
-                        "\"personID\"   TEXT NOT NULL," +
-                        "\"username\"   TEXT NOT NULL," +
-                        "\"firstName\"  TEXT NOT NULL," +
-                        "\"lastName\"   TEXT NOT NULL," +
-                        "\"gender\"     TEXT NOT NULL," +
-                        "\"fatherID\"   TEXT," +
-                        "\"motherID\"   TEXT," +
-                        "\"spouseID\"   TEXT" +
-                        "PRIMARY KEY(\"personID\")" +
-                        ");");
-                statement.executeUpdate("CREATE TABLE \"Users\" (" +
-                        "\"username\"   TEXT NOT NULL UNIQUE," +
-                        "\"password\"   TEXT NOT NULL," +
-                        "\"email\"  TEXT NOT NULL," +
-                        "\"firstName\"  TEXT NOT NULL," +
-                        "\"lastName\"   TEXT NOT NULL," +
-                        "\"gender\"     TEXT NOT NULL," +
-                        "\"personID\"   TEXT NOT NULL," +
-                        "PRIMARY KEY(\"personID\")" +
-                        ");");
-            }
-            finally {
-                if (statement != null) {
-                    statement.close();
-                    statement = null;
-                }
-            }
-        }
-        catch (SQLException error) {
-            throw new SQLException("createTables failed", error);
         }
     }
 

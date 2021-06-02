@@ -28,6 +28,8 @@ public class LoadService {
     public LoadResult load(LoadRequest request) throws SQLException {
         DatabaseDAO databaseDAO = new DatabaseDAO();
         try {
+            databaseDAO.openConnection();
+            databaseDAO.clearDatabase();
             UserDAO userDAO = new UserDAO(databaseDAO.getConnection());
             PersonDAO personDAO = new PersonDAO(databaseDAO.getConnection());
             EventDAO eventDAO = new EventDAO(databaseDAO.getConnection());

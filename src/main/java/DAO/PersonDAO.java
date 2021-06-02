@@ -173,10 +173,4 @@ public class PersonDAO {
             }
         }
     }
-
-    /**
-     * Removes person with specified ID from database
-     * @param personID ID of desired person
-     */
-    public void delete(String personID) {}
 }

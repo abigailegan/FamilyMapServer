@@ -105,14 +105,4 @@ public class PersonIDServiceTest {
         assertFalse(personResult.isSuccess());
         assertEquals("Error: Invalid personID.", personResult.getMessage());
     }
-
-    /*@Test
-    public void invalidUsername() throws SQLException {
-        PersonIDService personIDService = new PersonIDService();
-        PersonRequest personRequest = new PersonRequest(familyMember2.getPersonID(), authtoken);
-        PersonResult personResult = personIDService.person(personRequest);
-
-        assertFalse(personResult.isSuccess());
-        assertEquals("Error: Requested person does not belong to this user.", personResult.getMessage());
-    }*/
 }

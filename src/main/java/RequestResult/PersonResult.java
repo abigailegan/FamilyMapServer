@@ -155,6 +155,7 @@ public class PersonResult {
         this.fatherID = person.getFatherID();
         this.motherID = person.getMotherID();
         this.spouseID = person.getSpouseID();
+        this.success = success;
     }
 
     /**

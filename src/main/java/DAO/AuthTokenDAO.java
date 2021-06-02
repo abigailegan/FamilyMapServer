@@ -45,13 +45,6 @@ public class AuthTokenDAO {
     }
 
     /**
-     * This function finds the auth tokens that correspond to a specific username
-     * @param username username of authtokens to find
-     * @return AuthTokenModel object
-     */
-    public AuthTokenModel findAuthTokens(String username) { return null; }
-
-    /**
      * This function finds the username that corresponds to a specific authtoken
      * @param authtoken authtoken to find
      * @return AuthTokenModel object
@@ -102,11 +95,5 @@ public class AuthTokenDAO {
             if (statement != null) statement.close();
         }
     }
-
-    /**
-     * Removes a specific auth token from a username
-     * @param authtoken authtoken of entry to delete
-     */
-    public void delete(String authtoken) {}
 
 }

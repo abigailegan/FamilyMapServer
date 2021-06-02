@@ -2,12 +2,14 @@ package dao;
 
 import DAO.DatabaseDAO;
 import DAO.PersonDAO;
+import Model.EventModel;
 import Model.PersonModel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,5 +73,28 @@ public class PersonDAOTest {
         personDAO.add(person);
         personDAO.clear();
         assertThrows(SQLException.class, ()-> personDAO.find("qatest1personID"));
+    }
+
+    @Test
+    public void clearTwice() throws SQLException {
+        personDAO.add(person);
+        personDAO.clear();
+        personDAO.clear();
+        assertThrows(SQLException.class, ()-> personDAO.find("personID"));
+    }
+
+    @Test
+    public void findByUsernamePass() throws SQLException {
+        personDAO.clear();
+        personDAO.add(person);
+        ArrayList<PersonModel> matchedPersons = personDAO.findByUsername(person.getUsername());
+        assertNotNull(matchedPersons);
+        assertEquals(person, matchedPersons.get(0));
+    }
+
+    @Test
+    public void findByUsernameFail() throws SQLException {
+        personDAO.clear();
+        assertThrows(SQLException.class, ()-> personDAO.findByUsername(person.getUsername()));
     }
 }

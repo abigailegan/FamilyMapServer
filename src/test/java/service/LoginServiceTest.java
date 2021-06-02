@@ -101,7 +101,6 @@ public class LoginServiceTest {
         }
         catch (SQLException error) {
             databaseDAO.closeConnection(false);
-            assertThrows(SQLException.class, ()-> authTokenDAO.findAuthTokens(username));
             throw new SQLException(error.getMessage());
         }
         databaseDAO.closeConnection(true);
