@@ -4,7 +4,7 @@ public class PersonModel {
     /**
      * Unique username (non-empty string)
      */
-    String username;
+    String associatedUsername;
 
     /**
      *First name of person (non-empty string)
@@ -42,11 +42,11 @@ public class PersonModel {
     String spouseID;
 
     public void setUsername(String username) {
-        this.username = username;
+        this.associatedUsername = username;
     }
 
     public String getUsername() {
-        return username;
+        return associatedUsername;
     }
 
     public void setPersonID(String personID) {
@@ -138,7 +138,7 @@ public class PersonModel {
      */
     public PersonModel(String personID, String username, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
         this.personID = personID;
-        this.username = username;
+        this.associatedUsername = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;

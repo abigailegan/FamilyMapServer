@@ -24,7 +24,7 @@ public class AuthTokenDAOTest {
         String username = "qatest1";
         String authtoken = UUID.randomUUID().toString();
 
-        authTokenModel = new AuthTokenModel(personID, username, authtoken);
+        authTokenModel = new AuthTokenModel(username, authtoken);
         Connection connection = database.getConnection();
         authTokenDAO = new AuthTokenDAO(connection);
     }

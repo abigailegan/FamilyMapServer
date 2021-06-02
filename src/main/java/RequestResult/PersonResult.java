@@ -65,6 +65,82 @@ public class PersonResult {
      */
     private ArrayList<PersonModel> data;
 
+    public void setPersonID(String personID) {
+        this.personID = personID;
+    }
+
+    public String getPersonID() {
+        return personID;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getSpouseID() {
+        return spouseID;
+    }
+
+    public void setSpouseID(String spouseID) {
+        this.spouseID = spouseID;
+    }
+
+    public String getFatherID() {
+        return fatherID;
+    }
+
+    public void setFatherID(String fatherID) {
+        this.fatherID = fatherID;
+    }
+
+    public String getMotherID() {
+        return motherID;
+    }
+
+    public void setMotherID(String motherID) {
+        this.motherID = motherID;
+    }
+
+    public ArrayList<PersonModel> getData() {
+        return data;
+    }
+
+    public String getAssociatedUsername() {
+        return associatedUsername;
+    }
+
     /**
      * Constructor for /person/[personID] response body (PersonIDService)
      * @param person PersonModel object

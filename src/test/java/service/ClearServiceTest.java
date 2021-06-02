@@ -52,7 +52,7 @@ public class ClearServiceTest {
         personModel = new PersonModel(personID, username, firstName, lastName, gender, fatherID, motherID, spouseID);
         userModel = new UserModel(username, password, email, firstName, lastName, gender, personID);
         eventModel = new EventModel(eventID, username, personID, latitude, longitude, country, city, eventType, year);
-        authTokenModel = new AuthTokenModel(personID, username, authtoken);
+        authTokenModel = new AuthTokenModel(username, authtoken);
 
         Connection connection = databaseDAO.getConnection();
         databaseDAO.clearDatabase();

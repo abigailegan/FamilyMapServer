@@ -30,18 +30,17 @@ public class AuthTokenDAO {
         PreparedStatement statement;
 
         try {
-            String sql = "insert into AuthToken (personID, username, authtoken)" +
-                    " VALUES(?,?,?)";
+            String sql = "insert into AuthToken (username, authtoken)" +
+                    " VALUES(?,?)";
             statement = connection.prepareStatement(sql);
 
-            statement.setString(1, authtokenModel.getPersonID());
-            statement.setString(2, authtokenModel.getUsername());
-            statement.setString(3, authtokenModel.getAuthToken());
+            statement.setString(1, authtokenModel.getUsername());
+            statement.setString(2, authtokenModel.getAuthToken());
 
             statement.executeUpdate();
         }
         catch (SQLException error) {
-            throw new SQLException(("Error encountered while inserting into AuthToken table"));
+            throw new SQLException(("Error encountered while inserting into AuthToken table\n" + error.getMessage()));
         }
     }
 
@@ -73,7 +72,6 @@ public class AuthTokenDAO {
                 if (rs.getString(1) == null) throw new SQLException();
 
                 while (rs.next()) {
-                    authTokenModel.setPersonID(rs.getString("personID"));
                     authTokenModel.setUsername(rs.getString("username"));
                     authTokenModel.setAuthToken(rs.getString("authtoken"));
                 }

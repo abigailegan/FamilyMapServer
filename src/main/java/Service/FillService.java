@@ -53,7 +53,7 @@ public class FillService {
         surnames = gson.fromJson(surnamesReader, new TypeToken<ArrayList<String>>(){}.getType());
     }
 
-    private void generateGenerations(PersonModel person, int generations, EventModel personBirthEvent) throws SQLException {
+    private void generateGenerations(PersonModel child, int generations, EventModel personBirthEvent) throws SQLException {
         Collections.shuffle(fnames);
         Collections.shuffle(mnames);
         Collections.shuffle(surnames);
@@ -62,21 +62,41 @@ public class FillService {
         PersonDAO personDAO = new PersonDAO(databaseDAO.getConnection());
 
         //Set parent IDs
-        if (person.getMotherID() == null) person.setMotherID(UUID.randomUUID().toString());
-        if (person.getFatherID() == null) person.setFatherID(UUID.randomUUID().toString());
+        if (child.getMotherID() == null) child.setMotherID(UUID.randomUUID().toString());
+        if (child.getFatherID() == null) child.setFatherID(UUID.randomUUID().toString());
 
         //Make mother
         String motherFirstName = fnames.get(0);
         String motherLastName = surnames.get(0);
-        PersonModel mother = new PersonModel(person.getMotherID(), person.getUsername(), motherFirstName, motherLastName,
-                "f", null, null, person.getFatherID());
+        String mgrandmotherID;
+        String mgrandfatherID;
+        if (generations > 1) {
+            mgrandmotherID = UUID.randomUUID().toString();
+            mgrandfatherID = UUID.randomUUID().toString();
+        }
+        else {
+            mgrandmotherID = null;
+            mgrandfatherID = null;
+        }
+        PersonModel mother = new PersonModel(child.getMotherID(), child.getUsername(), motherFirstName, motherLastName,
+                "f", mgrandfatherID, mgrandmotherID, child.getFatherID());
         personDAO.add(mother);
 
         //Make father
         String fatherFirstName = mnames.get(0);
         String fatherLastName = surnames.get(0);
-        PersonModel father = new PersonModel(person.getFatherID(), person.getUsername(), fatherFirstName, fatherLastName,
-                "m", null, null, person.getMotherID());
+        String fgrandmotherID;
+        String fgrandfatherID;
+        if (generations > 1) {
+            fgrandmotherID = UUID.randomUUID().toString();
+            fgrandfatherID = UUID.randomUUID().toString();
+        }
+        else {
+            fgrandmotherID = null;
+            fgrandfatherID = null;
+        }
+        PersonModel father = new PersonModel(child.getFatherID(), child.getUsername(), fatherFirstName, fatherLastName,
+                "m", fgrandfatherID, fgrandmotherID, child.getMotherID());
         personDAO.add(father);
 
         Random random = new Random();
@@ -90,7 +110,7 @@ public class FillService {
         String motherBirthCity = locations.get(0).getCity();
         String motherBirthEventType = "birth";
         int motherBirthYear = personBirthEvent.getYear() - (random.nextInt(50 - 15) + 15);
-        EventModel motherBirthEvent = new EventModel(motherBirthEventID, person.getUsername(), mother.getPersonID(), motherBirthLatitude, motherBirthLongitude,
+        EventModel motherBirthEvent = new EventModel(motherBirthEventID, child.getUsername(), mother.getPersonID(), motherBirthLatitude, motherBirthLongitude,
                 motherBirthCountry, motherBirthCity, motherBirthEventType, motherBirthYear);
         eventDAO.add(motherBirthEvent);
 
@@ -101,7 +121,7 @@ public class FillService {
         String motherDeathCountry = locations.get(1).getCountry();
         String motherDeathCity = locations.get(1).getCity();
         int motherDeathYear = personBirthEvent.getYear() + (random.nextInt(60 - 1) + 1);
-        EventModel motherDeathEvent = new EventModel(motherDeathEventID, person.getUsername(), mother.getPersonID(),
+        EventModel motherDeathEvent = new EventModel(motherDeathEventID, child.getUsername(), mother.getPersonID(),
                 motherDeathLatitude, motherDeathLongitude, motherDeathCountry, motherDeathCity, "death", motherDeathYear);
         eventDAO.add(motherDeathEvent);
 
@@ -112,7 +132,7 @@ public class FillService {
         String motherMarriageCountry = locations.get(2).getCountry();
         String motherMarriageCity = locations.get(2).getCity();
         int motherMarriageYear = personBirthEvent.getYear() - 1;
-        EventModel motherMarriageEvent = new EventModel(motherMarriageEventID, person.getUsername(), mother.getPersonID(),
+        EventModel motherMarriageEvent = new EventModel(motherMarriageEventID, child.getUsername(), mother.getPersonID(),
                 motherMarriageLatitude, motherMarriageLongitude, motherMarriageCountry, motherMarriageCity, "marriage", motherMarriageYear);
         eventDAO.add(motherMarriageEvent);
 
@@ -123,7 +143,7 @@ public class FillService {
         String fatherBirthCountry = locations.get(3).getCountry();
         String fatherBirthCity = locations.get(3).getCity();
         int fatherBirthYear = personBirthEvent.getYear() - (random.nextInt(50 - 15) + 15);
-        EventModel fatherBirthEvent = new EventModel(fatherBirthEventID, person.getUsername(), father.getPersonID(),
+        EventModel fatherBirthEvent = new EventModel(fatherBirthEventID, child.getUsername(), father.getPersonID(),
                 fatherBirthLatitude, fatherBirthLongitude, fatherBirthCountry, fatherBirthCity, "birth", fatherBirthYear);
         eventDAO.add(fatherBirthEvent);
 
@@ -134,13 +154,13 @@ public class FillService {
         String fatherDeathCountry = locations.get(4).getCountry();
         String fatherDeathCity = locations.get(4).getCity();
         int fatherDeathYear = personBirthEvent.getYear() + (random.nextInt(60 - 1) + 1);
-        EventModel fatherDeathEvent = new EventModel(fatherDeathEventID, person.getUsername(), father.getPersonID(),
+        EventModel fatherDeathEvent = new EventModel(fatherDeathEventID, child.getUsername(), father.getPersonID(),
                 fatherDeathLatitude, fatherDeathLongitude, fatherDeathCountry, fatherDeathCity, "death", fatherDeathYear);
         eventDAO.add(fatherDeathEvent);
 
         //Generate father marriage event
-        EventModel fatherMarriageEvent = new EventModel(UUID.randomUUID().toString(), person.getUsername(), father.getPersonID(),
-                motherMarriageLatitude, motherMarriageLongitude, motherMarriageCountry, motherBirthCity, "marriage", motherMarriageYear);
+        EventModel fatherMarriageEvent = new EventModel(UUID.randomUUID().toString(), child.getUsername(), father.getPersonID(),
+                motherMarriageLatitude, motherMarriageLongitude, motherMarriageCountry, motherMarriageCity, "marriage", motherMarriageYear);
         eventDAO.add(fatherMarriageEvent);
 
         databaseDAO.closeConnection(true);
@@ -150,6 +170,12 @@ public class FillService {
             generateGenerations(mother, generations, motherBirthEvent);
             generateGenerations(father, generations, fatherBirthEvent);
         }
+        /*if (generations == 0) {
+            mother.setFatherID(null);
+            mother.setMotherID(null);
+            father.setFatherID(null);
+            father.setMotherID(null);
+        }*/
     }
 
     /**
@@ -180,7 +206,7 @@ public class FillService {
             personDAO.deleteByUsername(username);
             eventDAO.deleteByUsername(username);
 
-            String personID = UUID.randomUUID().toString();
+            String personID = user.getPersonID();
             String fatherID = UUID.randomUUID().toString();
             String motherID = UUID.randomUUID().toString();
             String spouseID = UUID.randomUUID().toString();
@@ -212,9 +238,8 @@ public class FillService {
             int numPersons = (int) (Math.pow(2, (generations + 1)) - 1);
             int numEvents = (numPersons - 1) * 3 + 1;
 
-            String message = "Successfully added " + numPersons + " people and " + numEvents + " events.";
-            FillResult result = new FillResult(message, true);
-            return result;
+            String message = "Successfully added " + numPersons + " persons and " + numEvents + " events.";
+            return new FillResult(message, true);
         }
         catch (SQLException | FileNotFoundException error) {
             databaseDAO.closeConnection(false);

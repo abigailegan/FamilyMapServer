@@ -1,7 +1,9 @@
 package service;
 
+import DAO.AuthTokenDAO;
 import DAO.DatabaseDAO;
 import DAO.UserDAO;
+import Model.AuthTokenModel;
 import Model.UserModel;
 import RequestResult.LoginRequest;
 import RequestResult.LoginResult;
@@ -29,7 +31,6 @@ public class LoginServiceTest {
         DatabaseDAO databaseDAO = new DatabaseDAO();
         databaseDAO.openConnection();
         databaseDAO.clearDatabase();
-        databaseDAO.closeConnection(true);
         UserDAO userDAO = new UserDAO(databaseDAO.getConnection());
         UserModel user = new UserModel(username, password, email, firstName, lastName, gender, personID);
         userDAO.add(user);
@@ -81,5 +82,31 @@ public class LoginServiceTest {
         //Check for failure and correct message
         assertFalse(result.isSuccess());
         assertEquals("Error: Incorrect username or password.", result.getMessage());
+    }
+
+    @Test
+    public void testAuthtoken() throws SQLException {
+        //Create login request and send request
+        LoginRequest request = new LoginRequest(username, password);
+        LoginService loginService = new LoginService();
+        LoginResult loginResult = loginService.login(request);
+
+        //Find authtoken in AuthToken table
+        DatabaseDAO databaseDAO = new DatabaseDAO();
+        databaseDAO.openConnection();
+        AuthTokenDAO authTokenDAO = new AuthTokenDAO(databaseDAO.getConnection());
+        AuthTokenModel authTokenModel;
+        try {
+            authTokenModel = authTokenDAO.findUsername(loginResult.getAuthtoken());
+        }
+        catch (SQLException error) {
+            databaseDAO.closeConnection(false);
+            assertThrows(SQLException.class, ()-> authTokenDAO.findAuthTokens(username));
+            throw new SQLException(error.getMessage());
+        }
+        databaseDAO.closeConnection(true);
+
+        assertEquals(loginResult.getAuthtoken(), authTokenModel.getAuthToken());
+        assertEquals(loginResult.getUsername(), authTokenModel.getUsername());
     }
 }

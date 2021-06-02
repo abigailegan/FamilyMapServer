@@ -33,7 +33,7 @@ public class EventDAO {
         PreparedStatement statement;
 
         try {
-            String sql = "insert into Events (eventID, username, personID, latitude, longitude, country, city, eventType, year)" +
+            String sql = "insert into Events (eventID, associatedUsername, personID, latitude, longitude, country, city, eventType, year)" +
                     " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             statement = connection.prepareStatement(sql);
 
@@ -76,7 +76,7 @@ public class EventDAO {
 
                 while (rs.next()) {
                     event.setEventID(rs.getString("eventID"));
-                    event.setUsername(rs.getString("username"));
+                    event.setUsername(rs.getString("associatedUsername"));
                     event.setPersonID(rs.getString("personID"));
                     event.setLatitude(rs.getFloat("latitude"));
                     event.setLongitude(rs.getFloat("longitude"));
@@ -105,12 +105,11 @@ public class EventDAO {
      */
     public ArrayList<EventModel> findByUsername(String username) throws SQLException {
         ArrayList<EventModel> events = new ArrayList<EventModel>();
-        EventModel event = new EventModel();
         try {
             PreparedStatement statement = null;
             ResultSet rs = null;
             try {
-                String sql = "select * from Events WHERE username = '" + username + "'";
+                String sql = "select * from Events WHERE associatedUsername = '" + username + "'";
                 statement = connection.prepareStatement(sql);
 
                 rs = statement.executeQuery();
@@ -118,6 +117,7 @@ public class EventDAO {
                 if (rs.getString(1) == null) throw new SQLException();
 
                 while (rs.next()) {
+                    EventModel event = new EventModel();
                     event.setEventID(rs.getString(1));
                     event.setUsername(rs.getString(2));
                     event.setPersonID(rs.getString(3));
@@ -166,7 +166,7 @@ public class EventDAO {
             PreparedStatement statement = null;
             ResultSet rs = null;
             try {
-                String sql = "delete from Events WHERE username = '" + username + "'";
+                String sql = "delete from Events WHERE associatedUsername = '" + username + "'";
                 statement = connection.prepareStatement(sql);
 
                 statement.executeUpdate();

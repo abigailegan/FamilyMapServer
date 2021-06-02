@@ -9,7 +9,7 @@ public class EventModel {
     /**
      * Unique username for the user to which this event belongs
      */
-    String username;
+    String associatedUsername;
 
     /**
      * Person ID of person to whom this event belongs
@@ -55,11 +55,11 @@ public class EventModel {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.associatedUsername = username;
     }
 
     public String getUsername() {
-        return username;
+        return associatedUsername;
     }
 
     public void setPersonID(String personID) {
@@ -151,7 +151,7 @@ public class EventModel {
      */
     public EventModel(String eventID, String username, String personID, float latitude, float longitude, String country, String city, String eventType, int year) {
         this.eventID = eventID;
-        this.username = username;
+        this.associatedUsername = username;
         this.personID = personID;
         this.latitude = latitude;
         this.longitude = longitude;

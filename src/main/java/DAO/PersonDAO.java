@@ -26,7 +26,7 @@ public class PersonDAO {
         PreparedStatement statement = null;
         try {
             try {
-                String sql = "insert into Persons (personID, username, firstName, lastName, gender, fatherID, motherID, spouseID) values (?, ?, ?, ?, ?, ?, ?, ?)";
+                String sql = "insert into Persons (personID, associatedUsername, firstName, lastName, gender, fatherID, motherID, spouseID) values (?, ?, ?, ?, ?, ?, ?, ?)";
                 statement = connection.prepareStatement(sql);
                 statement.setString(1, personModel.getPersonID());
                 statement.setString(2, personModel.getUsername());
@@ -45,7 +45,7 @@ public class PersonDAO {
             }
         }
         catch (SQLException error) {
-            throw new SQLException("Error encountered while inserting into Persons table");
+            throw new SQLException("Error encountered while inserting into Persons table\n" + error.getMessage());
         }
     }
 
@@ -100,12 +100,11 @@ public class PersonDAO {
      */
     public ArrayList<PersonModel> findByUsername(String username) throws SQLException {
         ArrayList<PersonModel> people = new ArrayList<PersonModel>();
-        PersonModel person = new PersonModel();
         try {
             PreparedStatement statement = null;
             ResultSet rs = null;
             try {
-                String sql = "select * from Persons WHERE username = '" + username + "'";
+                String sql = "select * from Persons WHERE associatedUsername = '" + username + "'";
                 statement = connection.prepareStatement(sql);
 
                 rs = statement.executeQuery();
@@ -113,6 +112,7 @@ public class PersonDAO {
                 if (rs.getString(1) == null) throw new SQLException();
 
                 while (rs.next()) {
+                    PersonModel person = new PersonModel();
                     person.setPersonID(rs.getString(1));
                     person.setUsername(rs.getString(2));
                     person.setFirstName(rs.getString(3));
@@ -142,7 +142,7 @@ public class PersonDAO {
         try {
             PreparedStatement statement = null;
             try {
-                String sql = "delete from Persons WHERE username = '" + username + "'";
+                String sql = "delete from Persons WHERE associatedUsername = '" + username + "'";
                 statement = connection.prepareStatement(sql);
 
                 statement.executeUpdate();

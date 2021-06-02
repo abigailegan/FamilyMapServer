@@ -16,14 +16,6 @@ public class AuthTokenModel {
      */
     String personID;
 
-    public void setPersonID(String personID) {
-        this.personID = personID;
-    }
-
-    public String getPersonID() {
-        return personID;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -46,8 +38,7 @@ public class AuthTokenModel {
 
         if (o instanceof AuthTokenModel) {
             AuthTokenModel oAuthTokenModel = (AuthTokenModel) o;
-            return oAuthTokenModel.getPersonID().equals(getPersonID()) &&
-                    oAuthTokenModel.getUsername().equals(getUsername()) &&
+            return oAuthTokenModel.getUsername().equals(getUsername()) &&
                     oAuthTokenModel.getAuthToken().equals(getAuthToken());
         }
         else return false;
@@ -58,8 +49,7 @@ public class AuthTokenModel {
      * @param username username for user to which this token belongs
      * @param authtoken authorization token returned by successful login request
      */
-    public AuthTokenModel(String personID, String username, String authtoken) {
-        this.personID = personID;
+    public AuthTokenModel(String username, String authtoken) {
         this.username = username;
         this.authtoken = authtoken;
     }

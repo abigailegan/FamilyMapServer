@@ -1,5 +1,6 @@
 package Service;
 
+import DAO.AuthTokenDAO;
 import DAO.DatabaseDAO;
 import DAO.UserDAO;
 import Model.UserModel;
@@ -38,6 +39,16 @@ public class RegisterService {
             LoginRequest loginRequest = new LoginRequest(userModel.getUsername(), userModel.getPassword());
             LoginService loginService = new LoginService();
             LoginResult loginResult = loginService.login(loginRequest);
+
+            try {
+                AuthTokenDAO authTokenDAO = new AuthTokenDAO(databaseDAO.getConnection());
+                authTokenDAO.findUsername(loginResult.getAuthtoken());
+                databaseDAO.closeConnection(true);
+            }
+            catch (SQLException error) {
+                databaseDAO.closeConnection(false);
+                throw new SQLException(error.getMessage());
+            }
 
             //Returns authtoken
             return new RegisterResult(loginResult.getAuthtoken(), loginResult.getUsername(), loginResult.getPersonID(), true);

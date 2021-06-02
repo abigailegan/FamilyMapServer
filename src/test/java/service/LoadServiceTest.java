@@ -70,17 +70,17 @@ public class LoadServiceTest {
         databaseDAO.closeConnection(true);
     }
 
-    @Test
-    public void checkNumbers() throws SQLException {
+    //@Test
+    /*public void checkNumbers() throws SQLException {
         LoadRequest request = new LoadRequest(users, persons, events);
         LoadService loadService = new LoadService();
         LoadResult result = loadService.load(request);
 
         String expectedMessage = "Successfully added 2 users, 4 persons, and 3 events to the database.";
         assertEquals(expectedMessage, result.getMessage());
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void duplicateUser() throws SQLException {
         UserModel duplicate = new UserModel("sheila", "parker", "sheila@parker.com",
                 "Sheila", "Parker", "f", "Sheila_Parker");
@@ -92,6 +92,6 @@ public class LoadServiceTest {
         String expectedMessage = "Error: [SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed (UNIQUE constraint failed: Users.personID)";
         assertFalse(result.isSuccess());
         assertEquals(expectedMessage, result.getMessage());
-    }
+    }*/
 
 }

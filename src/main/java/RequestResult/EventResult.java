@@ -91,6 +91,14 @@ public class EventResult {
     public String getEventType() { return eventType; }
     public int getYear() { return year; }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
     /**
      * Constructor for successful /event/[eventID] response body
      * @param event EventModel object

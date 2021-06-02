@@ -16,11 +16,6 @@ public class LoginRequest {
      */
     private String password;
 
-    /**
-     * Non-empty string containing user's personID
-     */
-    private String personID;
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -35,14 +30,6 @@ public class LoginRequest {
 
     public String getUsername() {
         return username;
-    }
-
-    public String getPersonID() {
-        return personID;
-    }
-
-    public void setPersonID(String personID) {
-        this.personID = personID;
     }
 
     /**

@@ -40,13 +40,14 @@ public class LoginService {
                 throw new Exception("Incorrect username or password.");
             }
 
-            databaseDAO.closeConnection(true);
-
             //Generate authtoken and add to table
             AuthTokenDAO authTokenDAO = new AuthTokenDAO(databaseDAO.getConnection());
 
             String authtoken = UUID.randomUUID().toString();
-            AuthTokenModel authTokenModel = new AuthTokenModel(request.getPersonID(), request.getUsername(), authtoken);
+            AuthTokenModel authTokenModel = new AuthTokenModel(request.getUsername(), authtoken);
+            authTokenDAO.add(authTokenModel);
+
+            databaseDAO.closeConnection(true);
 
             //Return authtoken
             return new LoginResult(authtoken, matchedUser.getUsername(), matchedUser.getPersonID(), true);

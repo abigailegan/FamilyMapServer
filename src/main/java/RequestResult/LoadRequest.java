@@ -3,8 +3,10 @@
 package RequestResult;
 
 import Model.EventModel;
+import Model.LoadArrayModel;
 import Model.PersonModel;
 import Model.UserModel;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -43,9 +45,12 @@ public class LoadRequest {
      * Constructor for /load request body
      * @return LoadRequest endpoint
      */
-    public LoadRequest(ArrayList<UserModel> users, ArrayList<PersonModel> persons, ArrayList<EventModel> events) {
-        this.users = users;
-        this.persons = persons;
-        this.events = events;
+    public LoadRequest(String arrays) {
+        Gson gson = new Gson();
+        LoadArrayModel arrayModel = gson.fromJson(arrays, LoadArrayModel.class);
+
+        users = arrayModel.getUsers();
+        persons = arrayModel.getPersons();
+        events = arrayModel.getEvents();
     }
 }
